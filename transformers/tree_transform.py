@@ -12,12 +12,13 @@ class TreeNode:
         self.children = children or list()
 
 
-def _tree2matrix_recursive(node: TreeNode, path, matrix):
+def _tree2matrix_recursive(node: TreeNode, path, h, matrix):
     if not node.children:
-        matrix[tuple(path)] = node.value
+        if len(path) == h:
+            matrix[tuple(path)] = node.value
     else:
         for i, child in enumerate(node.children):
-            _tree2matrix_recursive(child, path + [i], matrix)
+            _tree2matrix_recursive(child, path + [i], h, matrix)
 
 
 def tree2matrix(root: TreeNode, level_sizes: List[int]) -> np.array:
@@ -27,5 +28,6 @@ def tree2matrix(root: TreeNode, level_sizes: List[int]) -> np.array:
     :return: numpy array
     """
     matrix = np.zeros(level_sizes)
-    _tree2matrix_recursive(root, [0], matrix)
+    h = len(level_sizes)
+    _tree2matrix_recursive(root, [0], h, matrix)
     return matrix

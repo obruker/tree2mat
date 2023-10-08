@@ -19,3 +19,24 @@ class TreeTransformTest(TestCase):
         )
         actual = tree2matrix(root=root, level_sizes=[1, 2])
         np.testing.assert_array_equal(actual, np.array([vals]))
+
+    def test_that_zero_returned_for_trimmed_leafs(self):
+        root = TreeNode(
+            value=42,
+            children=[
+                TreeNode(
+                    value=42,
+                    children=[TreeNode(1), TreeNode(2)],
+                ),
+                TreeNode(
+                    value=42,
+                    children=[TreeNode(3), TreeNode(4)],
+                ),
+                TreeNode(
+                    value=42,
+                    children=[],
+                ),
+            ]
+        )
+        actual = tree2matrix(root=root, level_sizes=[1, 3, 2])
+        np.testing.assert_array_equal(actual, np.array([[[1, 2], [3, 4], [0, 0]]]))
